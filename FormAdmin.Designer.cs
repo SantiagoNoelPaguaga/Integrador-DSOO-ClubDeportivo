@@ -28,31 +28,58 @@
         /// </summary>
         private void InitializeComponent()
         {
-            rtxtAdmin = new RichTextBox();
+            lblDatosUsuario = new Label();
+            btnListarVencimientos = new Button();
+            button2 = new Button();
             SuspendLayout();
             // 
-            // rtxtAdmin
+            // lblDatosUsuario
             // 
-            rtxtAdmin.Location = new Point(240, 86);
-            rtxtAdmin.Name = "rtxtAdmin";
-            rtxtAdmin.Size = new Size(294, 271);
-            rtxtAdmin.TabIndex = 0;
-            rtxtAdmin.Text = "";
+            lblDatosUsuario.AutoSize = true;
+            lblDatosUsuario.Location = new Point(25, 22);
+            lblDatosUsuario.Name = "lblDatosUsuario";
+            lblDatosUsuario.Size = new Size(50, 15);
+            lblDatosUsuario.TabIndex = 0;
+            lblDatosUsuario.Text = "Usuario:";
+            // 
+            // btnListarVencimientos
+            // 
+            btnListarVencimientos.Location = new Point(56, 91);
+            btnListarVencimientos.Name = "btnListarVencimientos";
+            btnListarVencimientos.Size = new Size(335, 85);
+            btnListarVencimientos.TabIndex = 1;
+            btnListarVencimientos.Text = "MOSTRAR LISTADO DE SOCIOS CON VENCIMIENTO DE CUOTA";
+            btnListarVencimientos.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(56, 201);
+            button2.Name = "button2";
+            button2.Size = new Size(335, 85);
+            button2.TabIndex = 2;
+            button2.Text = "ACTUALIZAR ESTADO DE APTO FÍSICO DE CLIENTES";
+            button2.UseVisualStyleBackColor = true;
             // 
             // FormAdmin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(rtxtAdmin);
+            ClientSize = new Size(455, 353);
+            Controls.Add(button2);
+            Controls.Add(btnListarVencimientos);
+            Controls.Add(lblDatosUsuario);
             Name = "FormAdmin";
-            Text = "FormAdmin";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Menu Admin";
             Load += FormAdmin_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private RichTextBox rtxtAdmin;
+        private Label lblDatosUsuario;
+        private Button btnListarVencimientos;
+        private Button button2;
     }
 }

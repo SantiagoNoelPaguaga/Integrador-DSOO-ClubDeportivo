@@ -31,10 +31,10 @@
             txtEmail = new TextBox();
             txtPassword = new TextBox();
             btnIniciarSesion = new Button();
-            button2 = new Button();
+            btnRegistrar = new Button();
             label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
+            lblEmail = new Label();
+            lblPassword = new Label();
             SuspendLayout();
             // 
             // txtEmail
@@ -64,14 +64,15 @@
             btnIniciarSesion.UseVisualStyleBackColor = true;
             btnIniciarSesion.Click += btnIniciarSesion_Click;
             // 
-            // button2
+            // btnRegistrar
             // 
-            button2.Location = new Point(181, 254);
-            button2.Name = "button2";
-            button2.Size = new Size(126, 40);
-            button2.TabIndex = 3;
-            button2.Text = "REGISTRARSE";
-            button2.UseVisualStyleBackColor = true;
+            btnRegistrar.Location = new Point(181, 254);
+            btnRegistrar.Name = "btnRegistrar";
+            btnRegistrar.Size = new Size(126, 40);
+            btnRegistrar.TabIndex = 3;
+            btnRegistrar.Text = "REGISTRARSE";
+            btnRegistrar.UseVisualStyleBackColor = true;
+            btnRegistrar.Click += btnRegistrar_Click;
             // 
             // label1
             // 
@@ -82,40 +83,41 @@
             label1.TabIndex = 4;
             label1.Text = "¿No tienes cuenta aún?";
             // 
-            // label2
+            // lblEmail
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(94, 52);
-            label2.Name = "label2";
-            label2.Size = new Size(30, 12);
-            label2.TabIndex = 5;
-            label2.Text = "EMAIL";
+            lblEmail.AutoSize = true;
+            lblEmail.Font = new Font("Segoe UI", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lblEmail.Location = new Point(94, 52);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(30, 12);
+            lblEmail.TabIndex = 5;
+            lblEmail.Text = "EMAIL";
             // 
-            // label3
+            // lblPassword
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(94, 111);
-            label3.Name = "label3";
-            label3.Size = new Size(64, 12);
-            label3.TabIndex = 6;
-            label3.Text = "CONTRASEÑA";
+            lblPassword.AutoSize = true;
+            lblPassword.Font = new Font("Segoe UI", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lblPassword.Location = new Point(94, 111);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new Size(64, 12);
+            lblPassword.TabIndex = 6;
+            lblPassword.Text = "CONTRASEÑA";
             // 
             // FormLogin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(485, 335);
-            Controls.Add(label3);
-            Controls.Add(label2);
+            Controls.Add(lblPassword);
+            Controls.Add(lblEmail);
             Controls.Add(label1);
-            Controls.Add(button2);
+            Controls.Add(btnRegistrar);
             Controls.Add(btnIniciarSesion);
             Controls.Add(txtPassword);
             Controls.Add(txtEmail);
             Name = "FormLogin";
-            Text = "Home Page";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Login";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -125,9 +127,9 @@
         private TextBox txtEmail;
         private TextBox txtPassword;
         private Button btnIniciarSesion;
-        private Button button2;
         private Label label1;
-        private Label label2;
-        private Label label3;
+        private Label lblEmail;
+        private Label lblPassword;
+        private Button btnRegistrar;
     }
 }

@@ -41,3 +41,7 @@ C:\Users\User\Desktop\Proyecto Integrador DSOO\IntegradorClubDeportivoEquipo4\In
 C:\Users\User\Desktop\Proyecto Integrador DSOO\IntegradorClubDeportivoEquipo4\IntegradorClubDeportivoEquipo4\obj\Debug\net6.0-windows\IntegradorClubDeportivoEquipo4.genruntimeconfig.cache
 C:\Users\User\Desktop\Proyecto Integrador DSOO\IntegradorClubDeportivoEquipo4\IntegradorClubDeportivoEquipo4\obj\Debug\net6.0-windows\ref\IntegradorClubDeportivoEquipo4.dll
 C:\Users\User\Desktop\Proyecto Integrador DSOO\IntegradorClubDeportivoEquipo4\IntegradorClubDeportivoEquipo4\obj\Debug\net6.0-windows\IntegradorClubDeportivoEquipo4.FormAdmin.resources
+C:\Users\User\Desktop\Proyecto Integrador DSOO\IntegradorClubDeportivoEquipo4\IntegradorClubDeportivoEquipo4\obj\Debug\net6.0-windows\IntegradorClubDeportivoEquipo4.sourcelink.json
+C:\Users\User\Desktop\Proyecto Integrador DSOO\IntegradorClubDeportivoEquipo4\IntegradorClubDeportivoEquipo4\obj\Debug\net6.0-windows\IntegradorClubDeportivoEquipo4.FormRegistro.resources
+C:\Users\User\Desktop\Proyecto Integrador DSOO\IntegradorClubDeportivoEquipo4\IntegradorClubDeportivoEquipo4\obj\Debug\net6.0-windows\IntegradorClubDeportivoEquipo4.Properties.Resources.resources
+C:\Users\User\Desktop\Proyecto Integrador DSOO\IntegradorClubDeportivoEquipo4\IntegradorClubDeportivoEquipo4\obj\Debug\net6.0-windows\IntegradorClubDeportivoEquipo4.FormPago.resources

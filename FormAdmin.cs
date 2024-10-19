@@ -22,8 +22,8 @@ namespace IntegradorClubDeportivoEquipo4
 
         private void FormAdmin_Load(object sender, EventArgs e)
         {
-            String cadena = $"Nombre: {administrador.Nombre}\nRol: {administrador.Rol}\nTipo Documento: {administrador.TipoDocumento}\n";
-            rtxtAdmin.Text = cadena;
+            lblDatosUsuario.Text = $"Usuario: {administrador.Apellido}, {administrador.Nombre} ({administrador.Rol})";
+
         }
     }
 }

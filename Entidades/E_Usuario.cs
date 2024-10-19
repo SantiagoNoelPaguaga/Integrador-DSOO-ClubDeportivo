@@ -19,9 +19,21 @@ namespace IntegradorClubDeportivoEquipo4.Entidades
         private String? direccion;
         private String? rol;
 
+        public E_Usuario(string? nombre, string? apellido, string? tipoDocumento, string? documento, string? telefono, string? email, string? password, string? direccion, string? rol)
+        {
+            Nombre = nombre;
+            Apellido = apellido;
+            TipoDocumento = tipoDocumento;
+            Documento = documento;
+            Telefono = telefono;
+            Email = email;
+            Password = password;
+            Direccion = direccion;
+            Rol = rol;
+        }
+
         public E_Usuario(int idUsuario, string? nombre, string? apellido, string? tipoDocumento, string? documento, string? telefono, string? email, string? password, string? direccion, string? rol)
         {
-            IdUsuario = idUsuario;
             Nombre = nombre;
             Apellido = apellido;
             TipoDocumento = tipoDocumento;
