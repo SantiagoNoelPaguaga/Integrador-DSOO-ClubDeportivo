@@ -12,7 +12,7 @@ using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("IntegradorClubDeportivoEquipo4")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1ce87f4d33b4cd48a41ff1750ba74d0c0d75044a")]
 [assembly: System.Reflection.AssemblyProductAttribute("IntegradorClubDeportivoEquipo4")]

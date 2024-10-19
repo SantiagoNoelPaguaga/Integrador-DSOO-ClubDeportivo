@@ -9,6 +9,14 @@ namespace IntegradorClubDeportivoEquipo4
 {
     public partial class FormLogin : Form
     {
+        public Image? ConvertirAImagen(byte[] dataImagen) {
+            if (dataImagen == null || dataImagen.Length == 0)
+                return null;
+
+            using (MemoryStream ms = new MemoryStream(dataImagen)) {
+                return Image.FromStream(ms);
+            }
+        }
         public FormLogin()
         {
             InitializeComponent();
@@ -60,39 +68,48 @@ namespace IntegradorClubDeportivoEquipo4
                 }
                 else if (rol != null && rol.Equals("Socio"))
                 {
-                    E_Administrador admin = new E_Administrador
-                   (
-                       Convert.ToInt32(datosUsuario.Rows[0]["id_usuario"]),
-                       datosUsuario.Rows[0]["nombre"].ToString(),
-                       datosUsuario.Rows[0]["apellido"].ToString(),
-                       datosUsuario.Rows[0]["nombre_tipo_documento"].ToString(),
-                       datosUsuario.Rows[0]["documento"].ToString(),
-                       datosUsuario.Rows[0]["telefono"].ToString(),
-                       datosUsuario.Rows[0]["email"].ToString(),
-                       null,
-                       datosUsuario.Rows[0]["direccion"].ToString(),
-                       datosUsuario.Rows[0]["nombre_rol"].ToString()
-                   );
-
-                    formulario = new FormAdmin(admin);
+                    E_Socio socio = new E_Socio
+                    (
+                        Convert.ToInt32(datosUsuario.Rows[0]["id_usuario"]),
+                        datosUsuario.Rows[0]["nombre"].ToString(),
+                        datosUsuario.Rows[0]["apellido"].ToString(),
+                        datosUsuario.Rows[0]["nombre_tipo_documento"].ToString(),
+                        datosUsuario.Rows[0]["documento"].ToString(),
+                        datosUsuario.Rows[0]["telefono"].ToString(),
+                        datosUsuario.Rows[0]["email"].ToString(),
+                        null,
+                        datosUsuario.Rows[0]["direccion"].ToString(),
+                        datosUsuario.Rows[0]["nombre_rol"].ToString(),
+                        datosUsuario.Rows[0]["nro_carnet"].ToString(),
+                        (bool)datosUsuario.Rows[0]["tiene_deuda"],
+                        Convert.ToDouble(datosUsuario.Rows[0]["monto_mensual"]),
+                        Convert.ToDateTime(datosUsuario.Rows[0]["fecha_vencimiento"]),
+                        ConvertirAImagen((byte[])datosUsuario.Rows[0]["imagen_carnet"]),
+                        ConvertirAImagen((byte[])datosUsuario.Rows[0]["imagen_apto_fisico"]),
+                        datosUsuario.Rows[0]["nombre_estado"].ToString()
+                    );
+                    
+                    formulario = new FormSocio(socio);
                 }
                 else
                 {
-                    E_Administrador admin = new E_Administrador
+                    E_NoSocio noSocio = new E_NoSocio
                    (
-                       Convert.ToInt32(datosUsuario.Rows[0]["id_usuario"]),
-                       datosUsuario.Rows[0]["nombre"].ToString(),
-                       datosUsuario.Rows[0]["apellido"].ToString(),
-                       datosUsuario.Rows[0]["nombre_tipo_documento"].ToString(),
-                       datosUsuario.Rows[0]["documento"].ToString(),
-                       datosUsuario.Rows[0]["telefono"].ToString(),
-                       datosUsuario.Rows[0]["email"].ToString(),
-                       null,
-                       datosUsuario.Rows[0]["direccion"].ToString(),
-                       datosUsuario.Rows[0]["nombre_rol"].ToString()
+                        Convert.ToInt32(datosUsuario.Rows[0]["id_usuario"]),
+                        datosUsuario.Rows[0]["nombre"].ToString(),
+                        datosUsuario.Rows[0]["apellido"].ToString(),
+                        datosUsuario.Rows[0]["nombre_tipo_documento"].ToString(),
+                        datosUsuario.Rows[0]["documento"].ToString(),
+                        datosUsuario.Rows[0]["telefono"].ToString(),
+                        datosUsuario.Rows[0]["email"].ToString(),
+                        null,
+                        datosUsuario.Rows[0]["direccion"].ToString(),
+                        datosUsuario.Rows[0]["nombre_rol"].ToString(),
+                        datosUsuario.Rows[0]["nombre_estado"].ToString(),
+                        ConvertirAImagen((byte[])datosUsuario.Rows[0]["imagen_apto_fisico"])
                    );
 
-                    formulario = new FormAdmin(admin);
+                    formulario = new FormNoSocio(noSocio);
                 }
 
                 this.Hide();
