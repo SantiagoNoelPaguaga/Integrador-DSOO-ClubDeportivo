@@ -205,7 +205,14 @@ namespace IntegradorClubDeportivoEquipo4
 
                 E_Pago pago = new E_Pago(monto, formaDePago, cantCuotas, null);
 
-                usuarios.RealizarTransaccionRegistro(usuario, pago);
+                int idSocio = usuarios.RealizarTransaccionRegistro(usuario, pago);
+
+                DataTable carnet = usuarios.EmitirCarnet(idSocio);
+
+                this.Hide();
+                Form formulario = new FormCarnet(carnet);
+                
+                formulario.Show();
             }
         }
     }

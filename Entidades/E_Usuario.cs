@@ -34,6 +34,7 @@ namespace IntegradorClubDeportivoEquipo4.Entidades
 
         public E_Usuario(int idUsuario, string? nombre, string? apellido, string? tipoDocumento, string? documento, string? telefono, string? email, string? password, string? direccion, string? rol)
         {
+            IdUsuario = idUsuario;
             Nombre = nombre;
             Apellido = apellido;
             TipoDocumento = tipoDocumento;

@@ -22,7 +22,7 @@ namespace IntegradorClubDeportivoEquipo4.Datos
             this.servidor = "localhost";
             this.puerto = "3306";
             this.usuario = "root";
-            this.clave = "root";
+            this.clave = "";
         }
         // proceso de interacción
         public MySqlConnection CrearConcexion()

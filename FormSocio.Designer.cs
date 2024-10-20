@@ -24,6 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             lblDatosUsuario = new Label();
+            btnCarnet = new Button();
             SuspendLayout();
             // 
             // lblDatosUsuario
@@ -35,11 +36,22 @@
             lblDatosUsuario.TabIndex = 1;
             lblDatosUsuario.Text = "Usuario:";
             // 
+            // btnCarnet
+            // 
+            btnCarnet.Location = new Point(128, 114);
+            btnCarnet.Name = "btnCarnet";
+            btnCarnet.Size = new Size(190, 46);
+            btnCarnet.TabIndex = 23;
+            btnCarnet.Text = "VISUALIZAR CARNET";
+            btnCarnet.UseVisualStyleBackColor = true;
+            btnCarnet.Click += btnCarnet_Click;
+            // 
             // FormSocio
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(455, 353);
+            Controls.Add(btnCarnet);
             Controls.Add(lblDatosUsuario);
             Name = "FormSocio";
             Text = "FormSocio";
@@ -51,5 +63,6 @@
         #endregion
 
         private Label lblDatosUsuario;
+        private Button btnCarnet;
     }
 }

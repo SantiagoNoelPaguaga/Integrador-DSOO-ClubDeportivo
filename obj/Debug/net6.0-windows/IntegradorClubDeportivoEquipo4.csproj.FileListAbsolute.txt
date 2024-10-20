@@ -94,3 +94,4 @@ C:\Users\santi\Desktop\Integrador-DSOO-ClubDeportivo\obj\Debug\net6.0-windows\In
 C:\Users\santi\Desktop\Integrador-DSOO-ClubDeportivo\obj\Debug\net6.0-windows\ref\IntegradorClubDeportivoEquipo4.dll
 C:\Users\santi\Desktop\Integrador-DSOO-ClubDeportivo\obj\Debug\net6.0-windows\IntegradorClubDeportivoEquipo4.FormSocio.resources
 C:\Users\santi\Desktop\Integrador-DSOO-ClubDeportivo\obj\Debug\net6.0-windows\IntegradorClubDeportivoEquipo4.FormNoSocio.resources
+C:\Users\santi\Desktop\Integrador-DSOO-ClubDeportivo\obj\Debug\net6.0-windows\IntegradorClubDeportivoEquipo4.FormCarnet.resources

@@ -212,10 +212,11 @@ namespace IntegradorClubDeportivoEquipo4.Datos
             }
         }
 
-        public void RealizarTransaccionRegistro(E_Usuario usuario, E_Pago pago)
+        public int RealizarTransaccionRegistro(E_Usuario usuario, E_Pago pago)
         {
             MySqlConnection sqlCon = new MySqlConnection();
             MySqlTransaction sqlTransaction = null;
+            int idUsuario = 0;
             try
             {
                 sqlCon = Conexion.getInstancia().CrearConcexion();
@@ -229,9 +230,11 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                     E_Socio socio = (E_Socio)usuario;
                     int idSocio = RegistrarSocio(socio, sqlTransaction);
                     int idPago = RealizarPago(idSocio, pago, sqlTransaction);
+                    idUsuario = idSocio;
                 }
 
                 sqlTransaction.Commit();
+                return idUsuario;
             }
             catch (Exception ex)
             {
@@ -318,8 +321,8 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 outputParam.Direction = ParameterDirection.Output; 
                 comando.Parameters.Add(outputParam);
 
-                idSocio = comando.ExecuteNonQuery();
-
+                comando.ExecuteNonQuery();
+                idSocio = (int)comando.Parameters["p_id_usuario"].Value;
                 return idSocio;
             }
             catch (Exception ex)
@@ -348,7 +351,7 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 {
                     idFormaPago= 1;
                 }
-                comando.Parameters.Add("p_id_forma_pago", MySqlDbType.Int32).Value = idUsuario;
+                comando.Parameters.Add("p_id_forma_pago", MySqlDbType.Int32).Value = idFormaPago;
 
                 comando.Parameters.Add("p_fecha_pago",
                 MySqlDbType.Date).Value = pago.FechaPago;
@@ -369,6 +372,33 @@ namespace IntegradorClubDeportivoEquipo4.Datos
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+        public DataTable EmitirCarnet(int idUsuario) {
+            MySqlConnection sqlCon = new MySqlConnection();
+            MySqlDataReader resultado;
+            try {
+                sqlCon = Conexion.getInstancia().CrearConcexion();
+                MySqlCommand comando = new MySqlCommand
+                ("EmitirCarnet", sqlCon);
+                DataTable tabla = new DataTable();
+
+                sqlCon.Open();
+
+                comando.CommandType = CommandType.StoredProcedure;
+
+                comando.Parameters.Add("p_id_usuario", MySqlDbType.Int32).Value = idUsuario;
+
+                resultado = comando.ExecuteReader(); // almacenamos el resulatdo en la variable
+                tabla.Load(resultado); // cargamos la tabla con el resultado
+                return tabla;
+            } catch (Exception ex) {
+                throw;
+            } finally {
+                if (sqlCon.State == ConnectionState.Open) {
+                    sqlCon.Close();
+                }
             }
         }
 
