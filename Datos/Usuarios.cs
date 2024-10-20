@@ -365,8 +365,8 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 outputParam.Direction = ParameterDirection.Output;
                 comando.Parameters.Add(outputParam);
 
-                idPago = comando.ExecuteNonQuery();
-
+                comando.ExecuteNonQuery();
+                idPago = (int)comando.Parameters["p_id_pago"].Value;
                 return idPago;
             }
             catch (Exception ex)
