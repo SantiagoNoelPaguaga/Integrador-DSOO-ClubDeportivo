@@ -1,16 +1,6 @@
 ﻿using IntegradorClubDeportivoEquipo4.Datos;
 using IntegradorClubDeportivoEquipo4.Entidades;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static Mysqlx.Crud.Order.Types;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace IntegradorClubDeportivoEquipo4
 {
@@ -29,7 +19,7 @@ namespace IntegradorClubDeportivoEquipo4
             renderizado(false);
 
             imagenAptoFisico = null;
-            
+
             Rectangle res = Screen.PrimaryScreen.Bounds;
 
             this.Location = new Point((res.Width - this.Size.Width) / 2, 60);
@@ -148,7 +138,7 @@ namespace IntegradorClubDeportivoEquipo4
             String? password = txtPassword.Text;
             String? repetirPassword = txtRepetirPassword.Text;
             bool esSocio = rbtSocio.Checked;
-            
+
             if (string.IsNullOrWhiteSpace(nombre))
             {
                 MessageBox.Show("Por favor, ingrese su nombre.");
@@ -161,14 +151,14 @@ namespace IntegradorClubDeportivoEquipo4
                 return;
             }
 
-           
+
             if (string.IsNullOrWhiteSpace(telefono))
             {
                 MessageBox.Show("Por favor, ingrese un número de teléfono válido.");
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(direccion)) 
+            if (string.IsNullOrWhiteSpace(direccion))
             {
                 MessageBox.Show("Por favor, ingrese su dirección.");
                 return;
@@ -243,12 +233,12 @@ namespace IntegradorClubDeportivoEquipo4
                         montoMensual = Convert.ToDouble(filaSeleccionada["monto_mensual"]);
                     }
 
-                    E_Usuario usuario = new E_Socio(nombre,apellido, nombreTipoDocumento, documento, telefono, email, password, direccion, rbtSocio.Text, nroCarnet, tieneDeuda, montoMensual ,null, pbImagenCarnet.Image, imagenAptoFisico, null);
+                    E_Usuario usuario = new E_Socio(nombre, apellido, nombreTipoDocumento, documento, telefono, email, password, direccion, rbtSocio.Text, nroCarnet, tieneDeuda, montoMensual, null, pbImagenCarnet.Image, imagenAptoFisico, null);
                     formulario = new FormPago(usuario);
                 }
                 else
                 {
-                    E_Usuario usuario = new E_NoSocio(nombre,apellido,nombreTipoDocumento,documento,telefono,email,password,direccion,rbtNoSocio.Text,null,imagenAptoFisico);
+                    E_Usuario usuario = new E_NoSocio(nombre, apellido, nombreTipoDocumento, documento, telefono, email, password, direccion, rbtNoSocio.Text, null, imagenAptoFisico);
                     formulario = new FormPago(usuario);
                 }
 
@@ -259,7 +249,7 @@ namespace IntegradorClubDeportivoEquipo4
         }
 
         private String generarCarnet()
-        { 
+        {
             Random rnd = new Random();
 
             String num = rnd.Next(10000000, 99999999).ToString();
@@ -280,6 +270,11 @@ namespace IntegradorClubDeportivoEquipo4
             {
                 return false;
             }
+        }
+
+        private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

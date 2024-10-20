@@ -2,8 +2,6 @@
 using IntegradorClubDeportivoEquipo4.Datos;
 using IntegradorClubDeportivoEquipo4.Entidades;
 using System.Data;
-using static Mysqlx.Crud.Order.Types;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace IntegradorClubDeportivoEquipo4
 {
@@ -104,7 +102,7 @@ namespace IntegradorClubDeportivoEquipo4
             }
         }
 
-        private void btnRegistrar_Click(object sender, EventArgs e)
+        private void BtnRegistrar_Click(object sender, EventArgs e)
         {
             Form formulario = new FormRegistro();
             this.Hide();

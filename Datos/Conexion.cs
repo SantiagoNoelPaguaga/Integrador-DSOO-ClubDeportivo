@@ -1,9 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntegradorClubDeportivoEquipo4.Datos
 {
@@ -22,7 +17,7 @@ namespace IntegradorClubDeportivoEquipo4.Datos
             this.servidor = "localhost";
             this.puerto = "3306";
             this.usuario = "root";
-            this.clave = "root";
+            this.clave = "inaccesible";
         }
         // proceso de interacción
         public MySqlConnection CrearConcexion()

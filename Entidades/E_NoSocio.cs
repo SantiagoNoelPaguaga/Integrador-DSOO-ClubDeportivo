@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IntegradorClubDeportivoEquipo4.Entidades
+﻿namespace IntegradorClubDeportivoEquipo4.Entidades
 {
     public class E_NoSocio : E_Usuario
     {
@@ -14,7 +8,7 @@ namespace IntegradorClubDeportivoEquipo4.Entidades
 
 
         public E_NoSocio(string? nombre, string? apellido, string? tipoDocumento, string? documento, string? telefono, string? email, string? password, string? direccion, string? rol, string? estadoAptoFisico, Image imagenAptoFisico)
-        : base(nombre, apellido, tipoDocumento, documento, telefono, email, password, direccion, rol)
+         : base(nombre, apellido, tipoDocumento, documento, telefono, email, password, direccion, rol)
         {
             EstadoAptoFisico = estadoAptoFisico;
             ImagenAptoFisico = imagenAptoFisico;

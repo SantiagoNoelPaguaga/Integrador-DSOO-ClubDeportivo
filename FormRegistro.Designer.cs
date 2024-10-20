@@ -68,6 +68,7 @@
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(194, 23);
             txtNombre.TabIndex = 0;
+            txtNombre.TextChanged += txtNombre_TextChanged;
             // 
             // txtApellido
             // 

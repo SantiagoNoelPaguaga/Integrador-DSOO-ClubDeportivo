@@ -1,14 +1,6 @@
 ﻿using IntegradorClubDeportivoEquipo4.Datos;
 using IntegradorClubDeportivoEquipo4.Entidades;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace IntegradorClubDeportivoEquipo4
 {
@@ -109,6 +101,7 @@ namespace IntegradorClubDeportivoEquipo4
         private void dgvActividades_SelectionChanged(object sender, EventArgs e)
         {
             decimal monto = 0;
+            int idActividad = 0;
 
             if (dgvActividades.SelectedRows.Count > 0)
             {
@@ -118,14 +111,17 @@ namespace IntegradorClubDeportivoEquipo4
                     {
                         decimal precio = Convert.ToDecimal(row.Cells["precio"].Value);
                         monto += precio;
+
+                        int actividad = Convert.ToInt16(row.Cells["id_actividad"].Value);
+
+                        idActividad += actividad;
                     }
                 }
-
-                txtMonto.Text = $"${monto}";
+                txtMonto.Text = $"{monto}";
             }
             else
             {
-                txtMonto.Text = "$0";
+                txtMonto.Text = "0";
             }
         }
 
@@ -198,6 +194,7 @@ namespace IntegradorClubDeportivoEquipo4
                 }
 
                 E_Pago pago = new E_Pago(monto, formaDePago, cantCuotas, actividadesSeleccionadas);
+                usuarios.RealizarTransaccionRegistro(usuario, pago);
             }
             else
             {

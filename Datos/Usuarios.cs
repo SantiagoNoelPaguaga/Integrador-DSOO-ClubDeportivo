@@ -1,11 +1,6 @@
 ﻿using IntegradorClubDeportivoEquipo4.Entidades;
 using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IntegradorClubDeportivoEquipo4.Datos
 {
@@ -160,7 +155,7 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 sqlCon = Conexion.getInstancia().CrearConcexion();
 
                 MySqlCommand comando = new MySqlCommand
-                ("ObtenerActividades", sqlCon);
+                ("ObtenerActividadesConCuposDisponibles", sqlCon);
                 comando.CommandType = CommandType.StoredProcedure;
 
                 sqlCon.Open();
@@ -228,7 +223,13 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 {
                     E_Socio socio = (E_Socio)usuario;
                     int idSocio = RegistrarSocio(socio, sqlTransaction);
-                    int idPago = RealizarPago(idSocio, pago, sqlTransaction);
+                    int idPago = RealizarPago(idSocio, "", pago, sqlTransaction);
+                }
+                else if (usuario.Rol != null && usuario.Rol.Equals("No Socio", StringComparison.OrdinalIgnoreCase))
+                {
+                    E_NoSocio nosocio = (E_NoSocio)usuario;
+                    int idNoSocio = RegistrarNoSocio(nosocio, sqlTransaction);
+                    int idPago = RealizarPago(idNoSocio, "NoSocio", pago, sqlTransaction);
                 }
 
                 sqlTransaction.Commit();
@@ -255,7 +256,7 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 MySqlCommand comando = new MySqlCommand
                 ("RegistrarSocio", sqlTransaction.Connection, sqlTransaction);
                 comando.CommandType = CommandType.StoredProcedure;
-                
+
                 comando.Parameters.Add("p_nombre",
                 MySqlDbType.VarChar).Value = socio.Nombre;
 
@@ -315,7 +316,7 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 comando.Parameters.Add("p_id_plan", MySqlDbType.Int32).Value = 2;
 
                 MySqlParameter outputParam = new MySqlParameter("p_id_usuario", MySqlDbType.Int32);
-                outputParam.Direction = ParameterDirection.Output; 
+                outputParam.Direction = ParameterDirection.Output;
                 comando.Parameters.Add(outputParam);
 
                 idSocio = comando.ExecuteNonQuery();
@@ -328,27 +329,102 @@ namespace IntegradorClubDeportivoEquipo4.Datos
             }
         }
 
-        public int RealizarPago(int idUsuario, E_Pago pago, MySqlTransaction sqlTransaction)
+        public int RegistrarNoSocio(E_NoSocio nosocio, MySqlTransaction sqlTransaction)
         {
-            int idPago;
+            int idNoSocio;
+            int ultimoIdNoSocio;
             try
             {
                 MySqlCommand comando = new MySqlCommand
-                ("RealizarPago", sqlTransaction.Connection, sqlTransaction);
+                ("RegistrarNoSocio", sqlTransaction.Connection, sqlTransaction);
+                comando.CommandType = CommandType.StoredProcedure;
+
+                comando.Parameters.Add("p_nombre",
+                MySqlDbType.VarChar).Value = nosocio.Nombre;
+
+                comando.Parameters.Add("p_apellido", MySqlDbType.VarChar).Value =
+                nosocio.Apellido;
+
+                int idTipoDocumento;
+                if (nosocio.TipoDocumento.Equals("DNI", StringComparison.OrdinalIgnoreCase))
+                {
+                    idTipoDocumento = 1;
+                }
+                else if (nosocio.TipoDocumento.Equals("Pasaporte", StringComparison.OrdinalIgnoreCase))
+                {
+                    idTipoDocumento = 2;
+                }
+                else
+                {
+                    idTipoDocumento = 3;
+                }
+                comando.Parameters.Add("p_id_tipo_documento", MySqlDbType.Int32).Value = idTipoDocumento;
+
+                comando.Parameters.Add("p_documento",
+                MySqlDbType.VarChar).Value = nosocio.Documento;
+
+                comando.Parameters.Add("p_telefono",
+                MySqlDbType.VarChar).Value = nosocio.Telefono;
+
+                comando.Parameters.Add("p_email",
+                MySqlDbType.VarChar).Value = nosocio.Email;
+
+                comando.Parameters.Add("p_pass",
+                MySqlDbType.VarChar).Value = nosocio.Password;
+
+                comando.Parameters.Add("p_direccion",
+                MySqlDbType.VarChar).Value = nosocio.Direccion;
+
+                comando.Parameters.Add("p_id_rol", MySqlDbType.Int32).Value = 3;
+
+                byte[] imagenAptoFisicoBytes = ConvertirImagenABytes(nosocio.ImagenAptoFisico);
+                comando.Parameters.Add("p_imagen_apto_fisico", MySqlDbType.MediumBlob).Value = imagenAptoFisicoBytes;
+
+                comando.Parameters.Add("p_id_estado", MySqlDbType.Int32).Value = 2;
+
+                comando.Parameters.Add("p_id_plan", MySqlDbType.Int32).Value = 2;
+
+                MySqlParameter outputParam = new MySqlParameter("p_id_usuario", MySqlDbType.Int32);
+                outputParam.Direction = ParameterDirection.Output;
+                comando.Parameters.Add(outputParam);
+
+                idNoSocio = comando.ExecuteNonQuery();
+                // no devuelve el id_No Socio en forma correcta por eso lo pido de este forma.
+                MySqlCommand commandTwo = new MySqlCommand("SELECT MAX(id_usuario) FROM usuarios", sqlTransaction.Connection, sqlTransaction);
+                object result = commandTwo.ExecuteScalar();
+                ultimoIdNoSocio = Convert.ToInt32(result);
+                MessageBox.Show($"Registrar No Socio: {ultimoIdNoSocio}");
+
+                return ultimoIdNoSocio;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public int RealizarPago(int idUsuario, string rol, E_Pago pago, MySqlTransaction sqlTransaction)
+        {
+            int idPago;
+
+            try
+            {
+                MySqlCommand comando = new MySqlCommand
+                ($"RealizarPago{rol}", sqlTransaction.Connection, sqlTransaction);
                 comando.CommandType = CommandType.StoredProcedure;
 
                 comando.Parameters.Add("p_id_usuario", MySqlDbType.Int32).Value = idUsuario;
 
                 int idFormaPago;
-                if (pago.FormaDePago  != null && pago.FormaDePago.Equals("Efectivo", StringComparison.OrdinalIgnoreCase))
+                if (pago.FormaDePago != null && pago.FormaDePago.Equals("Efectivo", StringComparison.OrdinalIgnoreCase))
                 {
                     idFormaPago = 2;
                 }
                 else
                 {
-                    idFormaPago= 1;
+                    idFormaPago = 1;
                 }
-                comando.Parameters.Add("p_id_forma_pago", MySqlDbType.Int32).Value = idUsuario;
+                comando.Parameters.Add("p_id_forma_pago", MySqlDbType.Int32).Value = idFormaPago;
 
                 comando.Parameters.Add("p_fecha_pago",
                 MySqlDbType.Date).Value = pago.FechaPago;
@@ -362,7 +438,22 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 outputParam.Direction = ParameterDirection.Output;
                 comando.Parameters.Add(outputParam);
 
-                idPago = comando.ExecuteNonQuery();
+                comando.Parameters.Add("p_id_actividad", MySqlDbType.Int32).Value = 0;
+
+                // bucle por cada actividad pagada
+                foreach (E_Actividad actividad in pago.Actividades)
+                {
+                    comando.Parameters["p_id_actividad"].Value = actividad.IdActividad;
+                    comando.Parameters["p_monto"].Value = actividad.Precio;
+
+                    idPago = comando.ExecuteNonQuery();
+                }
+
+                // no devuelve el id_No Socio en forma correcta por eso lo pido de este forma.
+                MySqlCommand commandTwo = new MySqlCommand("SELECT MAX(id_pago) FROM pagos", sqlTransaction.Connection, sqlTransaction);
+                object result = commandTwo.ExecuteScalar();
+                idPago = Convert.ToInt32(result);
+                MessageBox.Show("Pago realizado con éxito");
 
                 return idPago;
             }
@@ -371,6 +462,8 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 throw;
             }
         }
+
+
 
         // Método auxiliar para convertir las imágenes a arreglo de Bytes para almacenarla en la base de datos
         public byte[] ConvertirImagenABytes(Image imagen)

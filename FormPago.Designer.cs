@@ -40,6 +40,7 @@
             dgvActividades = new DataGridView();
             panelActividades = new Panel();
             panelPago = new Panel();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvActividades).BeginInit();
             panelActividades.SuspendLayout();
             panelPago.SuspendLayout();
@@ -78,7 +79,7 @@
             rbtEfectivo.AutoSize = true;
             rbtEfectivo.Location = new Point(201, 122);
             rbtEfectivo.Name = "rbtEfectivo";
-            rbtEfectivo.Size = new Size(77, 19);
+            rbtEfectivo.Size = new Size(76, 19);
             rbtEfectivo.TabIndex = 8;
             rbtEfectivo.Text = "EFECTIVO";
             rbtEfectivo.UseVisualStyleBackColor = true;
@@ -90,7 +91,7 @@
             rbtTarjeta.Checked = true;
             rbtTarjeta.Location = new Point(325, 122);
             rbtTarjeta.Name = "rbtTarjeta";
-            rbtTarjeta.Size = new Size(137, 19);
+            rbtTarjeta.Size = new Size(134, 19);
             rbtTarjeta.TabIndex = 9;
             rbtTarjeta.TabStop = true;
             rbtTarjeta.Text = "TARJETA DE CRÉDITO";
@@ -156,6 +157,7 @@
             // 
             // panelPago
             // 
+            panelPago.Controls.Add(label3);
             panelPago.Controls.Add(label1);
             panelPago.Controls.Add(txtMonto);
             panelPago.Controls.Add(btnPagar);
@@ -168,6 +170,15 @@
             panelPago.Name = "panelPago";
             panelPago.Size = new Size(663, 322);
             panelPago.TabIndex = 16;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(153, 35);
+            label3.Name = "label3";
+            label3.Size = new Size(13, 15);
+            label3.TabIndex = 13;
+            label3.Text = "$";
             // 
             // FormPago
             // 
@@ -202,5 +213,6 @@
         private DataGridView dgvActividades;
         private Panel panelActividades;
         private Panel panelPago;
+        private Label label3;
     }
 }
