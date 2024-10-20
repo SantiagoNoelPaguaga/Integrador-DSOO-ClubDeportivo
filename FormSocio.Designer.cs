@@ -25,6 +25,7 @@
         private void InitializeComponent() {
             lblDatosUsuario = new Label();
             btnCarnet = new Button();
+            btnRealizarPago = new Button();
             SuspendLayout();
             // 
             // lblDatosUsuario
@@ -46,11 +47,21 @@
             btnCarnet.UseVisualStyleBackColor = true;
             btnCarnet.Click += btnCarnet_Click;
             // 
+            // btnRealizarPago
+            // 
+            btnRealizarPago.Location = new Point(128, 200);
+            btnRealizarPago.Name = "btnRealizarPago";
+            btnRealizarPago.Size = new Size(190, 46);
+            btnRealizarPago.TabIndex = 24;
+            btnRealizarPago.Text = "REALIZAR PAGO";
+            btnRealizarPago.UseVisualStyleBackColor = true;
+            // 
             // FormSocio
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(455, 353);
+            Controls.Add(btnRealizarPago);
             Controls.Add(btnCarnet);
             Controls.Add(lblDatosUsuario);
             Name = "FormSocio";
@@ -64,5 +75,6 @@
 
         private Label lblDatosUsuario;
         private Button btnCarnet;
+        private Button btnRealizarPago;
     }
 }
