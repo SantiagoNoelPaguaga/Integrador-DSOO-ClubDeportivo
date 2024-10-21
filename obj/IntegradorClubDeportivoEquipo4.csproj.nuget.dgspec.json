@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\Proyecto Integrador DSOO\\IntegradorClubDeportivoEquipo4\\IntegradorClubDeportivoEquipo4\\IntegradorClubDeportivoEquipo4.csproj": {}
+    "C:\\Users\\User\\Desktop\\Casi Terminado\\Integrador-DSOO-ClubDeportivo\\Integrador-DSOO-ClubDeportivo\\IntegradorClubDeportivoEquipo4.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\Proyecto Integrador DSOO\\IntegradorClubDeportivoEquipo4\\IntegradorClubDeportivoEquipo4\\IntegradorClubDeportivoEquipo4.csproj": {
+    "C:\\Users\\User\\Desktop\\Casi Terminado\\Integrador-DSOO-ClubDeportivo\\Integrador-DSOO-ClubDeportivo\\IntegradorClubDeportivoEquipo4.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\Proyecto Integrador DSOO\\IntegradorClubDeportivoEquipo4\\IntegradorClubDeportivoEquipo4\\IntegradorClubDeportivoEquipo4.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\Casi Terminado\\Integrador-DSOO-ClubDeportivo\\Integrador-DSOO-ClubDeportivo\\IntegradorClubDeportivoEquipo4.csproj",
         "projectName": "IntegradorClubDeportivoEquipo4",
-        "projectPath": "C:\\Users\\User\\Desktop\\Proyecto Integrador DSOO\\IntegradorClubDeportivoEquipo4\\IntegradorClubDeportivoEquipo4\\IntegradorClubDeportivoEquipo4.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\Casi Terminado\\Integrador-DSOO-ClubDeportivo\\Integrador-DSOO-ClubDeportivo\\IntegradorClubDeportivoEquipo4.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\Proyecto Integrador DSOO\\IntegradorClubDeportivoEquipo4\\IntegradorClubDeportivoEquipo4\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\Casi Terminado\\Integrador-DSOO-ClubDeportivo\\Integrador-DSOO-ClubDeportivo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

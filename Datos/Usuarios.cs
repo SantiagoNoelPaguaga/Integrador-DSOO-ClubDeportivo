@@ -160,7 +160,7 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 sqlCon = Conexion.getInstancia().CrearConcexion();
 
                 MySqlCommand comando = new MySqlCommand
-                ("ObtenerActividades", sqlCon);
+                ("ObtenerActividadesConCuposDisponibles", sqlCon);
                 comando.CommandType = CommandType.StoredProcedure;
 
                 sqlCon.Open();
@@ -212,10 +212,45 @@ namespace IntegradorClubDeportivoEquipo4.Datos
             }
         }
 
-        public void RealizarTransaccionRegistro(E_Usuario usuario, E_Pago pago)
+        public int ObtenerIdPlanPorMonto(double monto)
+        {
+            int resultado;
+            MySqlConnection sqlCon = new MySqlConnection();
+            try
+            {
+                sqlCon = Conexion.getInstancia().CrearConcexion();
+
+                MySqlCommand comando = new MySqlCommand
+                ("ObtenerIdPlanPorMonto", sqlCon);
+
+                comando.CommandType = CommandType.StoredProcedure;
+
+                comando.Parameters.Add("p_monto",
+                MySqlDbType.VarChar).Value = monto;
+
+                sqlCon.Open();
+                resultado = Convert.ToInt32(comando.ExecuteScalar());
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                if (sqlCon.State == ConnectionState.Open)
+                {
+                    sqlCon.Close();
+                }
+            }
+        }
+
+        public int RealizarTransaccionRegistro(E_Usuario usuario, E_Pago pago)
         {
             MySqlConnection sqlCon = new MySqlConnection();
             MySqlTransaction sqlTransaction = null;
+            int idUsuario = 0;
             try
             {
                 sqlCon = Conexion.getInstancia().CrearConcexion();
@@ -226,12 +261,39 @@ namespace IntegradorClubDeportivoEquipo4.Datos
 
                 if (usuario.Rol != null && usuario.Rol.Equals("Socio", StringComparison.OrdinalIgnoreCase))
                 {
-                    E_Socio socio = (E_Socio)usuario;
-                    int idSocio = RegistrarSocio(socio, sqlTransaction);
-                    int idPago = RealizarPago(idSocio, pago, sqlTransaction);
+                    if (usuario.IdUsuario != 0)
+                    {
+                        int idPago = RealizarPago(usuario.IdUsuario, pago, sqlTransaction);
+                        idUsuario = usuario.IdUsuario;
+                    }
+                    else
+                    {
+                        E_Socio socio = (E_Socio)usuario;
+                        int idSocio = RegistrarSocio(socio, sqlTransaction);
+                        int idPago = RealizarPago(idSocio, pago, sqlTransaction);
+                        idUsuario = idSocio;
+                    }
+                }
+                else if (usuario.Rol != null && usuario.Rol.Equals("No Socio", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (usuario.IdUsuario != 0)
+                    {
+                        int idPago = RealizarPago(usuario.IdUsuario, pago, sqlTransaction);
+                        RegistrarActividad(pago, idPago, sqlTransaction);
+                        idUsuario= usuario.IdUsuario;
+                    }
+                    else
+                    {
+                        E_NoSocio nosocio = (E_NoSocio)usuario;
+                        int idNoSocio = RegistrarNoSocio(nosocio, sqlTransaction);
+                        int idPago = RealizarPago(idNoSocio, pago, sqlTransaction);
+                        RegistrarActividad(pago ,idPago, sqlTransaction);
+                        idUsuario = idNoSocio;
+                    }  
                 }
 
                 sqlTransaction.Commit();
+                return idUsuario;
             }
             catch (Exception ex)
             {
@@ -255,7 +317,7 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 MySqlCommand comando = new MySqlCommand
                 ("RegistrarSocio", sqlTransaction.Connection, sqlTransaction);
                 comando.CommandType = CommandType.StoredProcedure;
-                
+
                 comando.Parameters.Add("p_nombre",
                 MySqlDbType.VarChar).Value = socio.Nombre;
 
@@ -312,15 +374,88 @@ namespace IntegradorClubDeportivoEquipo4.Datos
 
                 comando.Parameters.Add("p_id_estado", MySqlDbType.Int32).Value = 2;
 
+                comando.Parameters.Add("p_id_plan", MySqlDbType.Int32).Value = ObtenerIdPlanPorMonto(socio.MontoMensual);
+
+                MySqlParameter outputParam = new MySqlParameter("p_id_usuario", MySqlDbType.Int32);
+                outputParam.Direction = ParameterDirection.Output;
+                comando.Parameters.Add(outputParam);
+
+                comando.ExecuteNonQuery();
+                idSocio = (int)comando.Parameters["p_id_usuario"].Value;
+                return idSocio;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public int RegistrarNoSocio(E_NoSocio nosocio, MySqlTransaction sqlTransaction)
+        {
+            int idNoSocio;
+            int ultimoIdNoSocio;
+            try
+            {
+                MySqlCommand comando = new MySqlCommand
+                ("RegistrarNoSocio", sqlTransaction.Connection, sqlTransaction);
+                comando.CommandType = CommandType.StoredProcedure;
+
+                comando.Parameters.Add("p_nombre",
+                MySqlDbType.VarChar).Value = nosocio.Nombre;
+
+                comando.Parameters.Add("p_apellido", MySqlDbType.VarChar).Value =
+                nosocio.Apellido;
+
+                int idTipoDocumento;
+                if (nosocio.TipoDocumento.Equals("DNI", StringComparison.OrdinalIgnoreCase))
+                {
+                    idTipoDocumento = 1;
+                }
+                else if (nosocio.TipoDocumento.Equals("Pasaporte", StringComparison.OrdinalIgnoreCase))
+                {
+                    idTipoDocumento = 2;
+                }
+                else
+                {
+                    idTipoDocumento = 3;
+                }
+                comando.Parameters.Add("p_id_tipo_documento", MySqlDbType.Int32).Value = idTipoDocumento;
+
+                comando.Parameters.Add("p_documento",
+                MySqlDbType.VarChar).Value = nosocio.Documento;
+
+                comando.Parameters.Add("p_telefono",
+                MySqlDbType.VarChar).Value = nosocio.Telefono;
+
+                comando.Parameters.Add("p_email",
+                MySqlDbType.VarChar).Value = nosocio.Email;
+
+                comando.Parameters.Add("p_pass",
+                MySqlDbType.VarChar).Value = nosocio.Password;
+
+                comando.Parameters.Add("p_direccion",
+                MySqlDbType.VarChar).Value = nosocio.Direccion;
+
+                comando.Parameters.Add("p_id_rol", MySqlDbType.Int32).Value = 3;
+
+                byte[] imagenAptoFisicoBytes = ConvertirImagenABytes(nosocio.ImagenAptoFisico);
+                comando.Parameters.Add("p_imagen_apto_fisico", MySqlDbType.MediumBlob).Value = imagenAptoFisicoBytes;
+
+                comando.Parameters.Add("p_id_estado", MySqlDbType.Int32).Value = 2;
+
                 comando.Parameters.Add("p_id_plan", MySqlDbType.Int32).Value = 2;
 
                 MySqlParameter outputParam = new MySqlParameter("p_id_usuario", MySqlDbType.Int32);
-                outputParam.Direction = ParameterDirection.Output; 
+                outputParam.Direction = ParameterDirection.Output;
                 comando.Parameters.Add(outputParam);
 
-                idSocio = comando.ExecuteNonQuery();
+                idNoSocio = comando.ExecuteNonQuery();
+                // no devuelve el id_No Socio en forma correcta por eso lo pido de este forma.
+                MySqlCommand commandTwo = new MySqlCommand("SELECT MAX(id_usuario) FROM usuarios", sqlTransaction.Connection, sqlTransaction);
+                object result = commandTwo.ExecuteScalar();
+                ultimoIdNoSocio = Convert.ToInt32(result);
 
-                return idSocio;
+                return ultimoIdNoSocio;
             }
             catch (Exception ex)
             {
@@ -340,15 +475,15 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 comando.Parameters.Add("p_id_usuario", MySqlDbType.Int32).Value = idUsuario;
 
                 int idFormaPago;
-                if (pago.FormaDePago  != null && pago.FormaDePago.Equals("Efectivo", StringComparison.OrdinalIgnoreCase))
+                if (pago.FormaDePago != null && pago.FormaDePago.Equals("Efectivo", StringComparison.OrdinalIgnoreCase))
                 {
                     idFormaPago = 2;
                 }
                 else
                 {
-                    idFormaPago= 1;
+                    idFormaPago = 1;
                 }
-                comando.Parameters.Add("p_id_forma_pago", MySqlDbType.Int32).Value = idUsuario;
+                comando.Parameters.Add("p_id_forma_pago", MySqlDbType.Int32).Value = idFormaPago;
 
                 comando.Parameters.Add("p_fecha_pago",
                 MySqlDbType.Date).Value = pago.FechaPago;
@@ -362,13 +497,75 @@ namespace IntegradorClubDeportivoEquipo4.Datos
                 outputParam.Direction = ParameterDirection.Output;
                 comando.Parameters.Add(outputParam);
 
-                idPago = comando.ExecuteNonQuery();
-
+                comando.ExecuteNonQuery();
+                idPago = (int)comando.Parameters["p_id_pago"].Value;
                 return idPago;
             }
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+
+        public void RegistrarActividad(E_Pago pago, int idPago, MySqlTransaction sqlTransaction)
+        {
+            MySqlCommand comando = new MySqlCommand
+            ("RegistrarActividad", sqlTransaction.Connection, sqlTransaction);
+            comando.CommandType = CommandType.StoredProcedure;
+
+            comando.Parameters.Add("p_id_pago", MySqlDbType.Int32).Value = 0;
+            comando.Parameters.Add("p_id_actividad", MySqlDbType.Int32).Value = 0;
+            
+            foreach (E_Actividad actividad in pago.Actividades)
+            {
+                try
+                {
+                    comando.Parameters["p_id_pago"].Value = idPago;
+
+                    comando.Parameters["p_id_actividad"].Value = actividad.IdActividad;
+
+                    comando.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
+           
+        }
+
+        public DataTable EmitirCarnet(int idUsuario)
+        {
+            MySqlConnection sqlCon = new MySqlConnection();
+            MySqlDataReader resultado;
+            try
+            {
+                sqlCon = Conexion.getInstancia().CrearConcexion();
+                MySqlCommand comando = new MySqlCommand
+                ("EmitirCarnet", sqlCon);
+                DataTable tabla = new DataTable();
+
+                sqlCon.Open();
+
+                comando.CommandType = CommandType.StoredProcedure;
+
+                comando.Parameters.Add("p_id_usuario", MySqlDbType.Int32).Value = idUsuario;
+
+                resultado = comando.ExecuteReader(); // almacenamos el resulatdo en la variable
+                tabla.Load(resultado); // cargamos la tabla con el resultado
+                return tabla;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                if (sqlCon.State == ConnectionState.Open)
+                {
+                    sqlCon.Close();
+                }
             }
         }
 

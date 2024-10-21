@@ -9,27 +9,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Mysqlx.Crud.Order.Types;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace IntegradorClubDeportivoEquipo4
 {
     public partial class FormRegistro : Form
     {
-        //private Byte[]? imagenCarnetBytes;
-        //private Byte[]? imagenAptoFisicoBytes;
         private Image? imagenAptoFisico;
         private Usuarios usuarios = new Usuarios();
         private bool imagenCarnetCargada = false;
+        private Form formAnterior;
 
-        public FormRegistro()
+        public FormRegistro(Form formAnterior)
         {
             InitializeComponent();
 
             renderizado(false);
 
+            this.formAnterior = formAnterior;
+
             imagenAptoFisico = null;
-            
+
             Rectangle res = Screen.PrimaryScreen.Bounds;
 
             this.Location = new Point((res.Width - this.Size.Width) / 2, 60);
@@ -65,7 +64,6 @@ namespace IntegradorClubDeportivoEquipo4
             cboPlanes.DataSource = dtPlanes;
             cboPlanes.DisplayMember = "descripcion_precio";
             cboPlanes.ValueMember = "id_plan";
-
         }
 
         private void btnAgregarAptoFisico_Click(object sender, EventArgs e)
@@ -82,9 +80,6 @@ namespace IntegradorClubDeportivoEquipo4
 
                 imagenAptoFisico = Image.FromFile(openFileDialog.FileName);
 
-                //imagenAptoFisico = new Bitmap(openFileDialog.FileName);
-
-                //imagenAptoFisicoBytes = File.ReadAllBytes(openFileDialog.FileName);
             }
         }
 
@@ -100,9 +95,6 @@ namespace IntegradorClubDeportivoEquipo4
 
                 imagenCarnetCargada = true;
 
-                //pbImagenCarnet.Image = new Bitmap(openFileDialog.FileName);
-
-                //imagenCarnetBytes = File.ReadAllBytes(openFileDialog.FileName);
             }
         }
 
@@ -121,17 +113,23 @@ namespace IntegradorClubDeportivoEquipo4
 
             if (esSocio)
             {
-                btnContinuar.Location = new Point(175, 812);
-
                 panelSocio.Visible = true;
+                lblSeleccionarPlan.Visible = true;
+                cboPlanes.Visible = true;
+                lblImagenCarnet.Visible = true;
+                pbImagenCarnet.Visible = true;
+                btnSubirImagen.Visible = true;
+                this.ClientSize = new Size(901, 661);
             }
             else
             {
-                btnContinuar.Location = new Point(175, 600);
-
                 panelSocio.Visible = false;
-
-                ClientSize = new Size(509, 400);
+                lblSeleccionarPlan.Visible = false;
+                cboPlanes.Visible = false;
+                lblImagenCarnet.Visible = false;
+                pbImagenCarnet.Visible = false;
+                btnSubirImagen.Visible = false;
+                this.ClientSize = new Size(585, 661);
             }
         }
 
@@ -148,65 +146,65 @@ namespace IntegradorClubDeportivoEquipo4
             String? password = txtPassword.Text;
             String? repetirPassword = txtRepetirPassword.Text;
             bool esSocio = rbtSocio.Checked;
-            
+
             if (string.IsNullOrWhiteSpace(nombre))
             {
-                MessageBox.Show("Por favor, ingrese su nombre.");
+                MessageBox.Show("Por favor, ingrese su nombre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(apellido))
             {
-                MessageBox.Show("Por favor, ingrese su apellido.");
+                MessageBox.Show("Por favor, ingrese su apellido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-           
+
             if (string.IsNullOrWhiteSpace(telefono))
             {
-                MessageBox.Show("Por favor, ingrese un número de teléfono válido.");
+                MessageBox.Show("Por favor, ingrese un número de teléfono válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(direccion)) 
+            if (string.IsNullOrWhiteSpace(direccion))
             {
-                MessageBox.Show("Por favor, ingrese su dirección.");
+                MessageBox.Show("Por favor, ingrese su dirección.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             if (idTipoDocumento == -1)
             {
-                MessageBox.Show("Por favor, seleccione un tipo de documento.");
+                MessageBox.Show("Por favor, seleccione un tipo de documento.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(documento))
             {
-                MessageBox.Show("Por favor, ingrese el número de documento.");
+                MessageBox.Show("Por favor, ingrese el número de documento.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(email) || !esUnEmailValido(email))
             {
-                MessageBox.Show("Por favor, ingrese un correo electrónico válido.");
+                MessageBox.Show("Por favor, ingrese un correo electrónico válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(password) || password.Length < 8)
             {
-                MessageBox.Show("La contraseña no puede estar vacía y debe tener al menos 8 caracteres.");
+                MessageBox.Show("La contraseña no puede estar vacía y debe tener al menos 8 caracteres.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             if (password != repetirPassword)
             {
-                MessageBox.Show("Las contraseñas no coinciden.");
+                MessageBox.Show("Las contraseñas no coinciden.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             if (imagenAptoFisico == null)
             {
-                MessageBox.Show("Por favor, cargue una imagen válida para el Apto Físico.");
+                MessageBox.Show("Por favor, cargue una imagen válida para el Apto Físico.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -214,7 +212,7 @@ namespace IntegradorClubDeportivoEquipo4
 
             if (resultado > 0)
             {
-                MessageBox.Show("El usuario ingresado ya existe");
+                MessageBox.Show("El usuario ingresado ya existe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             else
@@ -228,13 +226,13 @@ namespace IntegradorClubDeportivoEquipo4
 
                     if (pbImagenCarnet.Image == null || !imagenCarnetCargada)
                     {
-                        MessageBox.Show("Por favor, cargue una imagen válida para el Carnet.");
+                        MessageBox.Show("Por favor, cargue una imagen válida para el Carnet.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
                     if ((int)cboPlanes.SelectedValue == -1)
                     {
-                        MessageBox.Show("Por favor, seleccione un Plan.");
+                        MessageBox.Show("Por favor, seleccione un Plan.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                     else
@@ -243,13 +241,13 @@ namespace IntegradorClubDeportivoEquipo4
                         montoMensual = Convert.ToDouble(filaSeleccionada["monto_mensual"]);
                     }
 
-                    E_Usuario usuario = new E_Socio(nombre,apellido, nombreTipoDocumento, documento, telefono, email, password, direccion, rbtSocio.Text, nroCarnet, tieneDeuda, montoMensual ,null, pbImagenCarnet.Image, imagenAptoFisico, null);
-                    formulario = new FormPago(usuario);
+                    E_Usuario usuario = new E_Socio(nombre, apellido, nombreTipoDocumento, documento, telefono, email, password, direccion, rbtSocio.Text, nroCarnet, tieneDeuda, montoMensual, null, pbImagenCarnet.Image, imagenAptoFisico, null);
+                    formulario = new FormPago(usuario, this);
                 }
                 else
                 {
-                    E_Usuario usuario = new E_NoSocio(nombre,apellido,nombreTipoDocumento,documento,telefono,email,password,direccion,rbtNoSocio.Text,null,imagenAptoFisico);
-                    formulario = new FormPago(usuario);
+                    E_Usuario usuario = new E_NoSocio(nombre, apellido, nombreTipoDocumento, documento, telefono, email, password, direccion, rbtNoSocio.Text, null, imagenAptoFisico);
+                    formulario = new FormPago(usuario, this);
                 }
 
                 this.Hide();
@@ -259,7 +257,7 @@ namespace IntegradorClubDeportivoEquipo4
         }
 
         private String generarCarnet()
-        { 
+        {
             Random rnd = new Random();
 
             String num = rnd.Next(10000000, 99999999).ToString();
@@ -280,6 +278,12 @@ namespace IntegradorClubDeportivoEquipo4
             {
                 return false;
             }
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            formAnterior.Show();
+            this.Close();
         }
     }
 }

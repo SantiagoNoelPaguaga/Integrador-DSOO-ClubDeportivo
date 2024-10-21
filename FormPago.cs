@@ -15,14 +15,15 @@ namespace IntegradorClubDeportivoEquipo4
     public partial class FormPago : Form
     {
         private E_Usuario usuario;
+        private Form formAnterior;
         private Usuarios usuarios = new Usuarios();
 
-        public FormPago(E_Usuario usuario)
+        public FormPago(E_Usuario usuario, Form formAnterior)
         {
             InitializeComponent();
 
             this.usuario = usuario;
-
+            this.formAnterior = formAnterior;
         }
 
         private void FormPago_Load(object sender, EventArgs e)
@@ -90,16 +91,12 @@ namespace IntegradorClubDeportivoEquipo4
 
             if (mostrarCuotas)
             {
-                btnPagar.Location = new Point(273, 245);
-
                 lblCantCuotas.Visible = true;
 
                 cboCantidadCuotas.Visible = true;
             }
             else
             {
-                btnPagar.Location = new Point(273, 201);
-
                 lblCantCuotas.Visible = false;
 
                 cboCantidadCuotas.Visible = false;
@@ -121,11 +118,11 @@ namespace IntegradorClubDeportivoEquipo4
                     }
                 }
 
-                txtMonto.Text = $"${monto}";
+                txtMonto.Text = $"{monto}";
             }
             else
             {
-                txtMonto.Text = "$0";
+                txtMonto.Text = "0";
             }
         }
 
@@ -150,7 +147,7 @@ namespace IntegradorClubDeportivoEquipo4
             {
                 if ((int)cboCantidadCuotas.SelectedValue == -1)
                 {
-                    MessageBox.Show("Por favor, ingrese la cantidad de cuotas.");
+                    MessageBox.Show("Por favor, ingrese la cantidad de cuotas.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 else if ((int)cboCantidadCuotas.SelectedValue == 1)
@@ -173,7 +170,7 @@ namespace IntegradorClubDeportivoEquipo4
 
                 if (dgvActividades.SelectedRows.Count == 0)
                 {
-                    MessageBox.Show("Por favor, seleccione al menos una actividad.");
+                    MessageBox.Show("Por favor, seleccione al menos una actividad.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 else
@@ -198,6 +195,24 @@ namespace IntegradorClubDeportivoEquipo4
                 }
 
                 E_Pago pago = new E_Pago(monto, formaDePago, cantCuotas, actividadesSeleccionadas);
+
+                int idNoSocio = usuarios.RealizarTransaccionRegistro(usuario, pago);
+
+                MessageBox.Show("El pago fue procesado correctamente!", "Resultado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if (usuario.IdUsuario == 0)
+                {
+                    this.Close();
+
+                    FormLogin.GetInstance().Show();
+
+                    MessageBox.Show("El registro fue completado exitosamente!", "Resultado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    formAnterior.Show();
+                    this.Close();
+                }
             }
             else
             {
@@ -205,8 +220,34 @@ namespace IntegradorClubDeportivoEquipo4
 
                 E_Pago pago = new E_Pago(monto, formaDePago, cantCuotas, null);
 
-                usuarios.RealizarTransaccionRegistro(usuario, pago);
+                int idSocio = usuarios.RealizarTransaccionRegistro(usuario, pago);
+
+                MessageBox.Show("El pago fue procesado correctamente!","Resultado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if (usuario.IdUsuario == 0)
+                {
+                    DataTable carnet = usuarios.EmitirCarnet(idSocio);
+
+                    this.Close();
+                    Form formulario = new FormCarnet(carnet, this);
+
+                    formulario.Show();
+
+                    MessageBox.Show("El registro fue completado exitosamente!", "Resultado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    formAnterior.Show();
+                    this.Close();
+                }
+
             }
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            formAnterior.Show();
+            this.Close();
         }
     }
 }

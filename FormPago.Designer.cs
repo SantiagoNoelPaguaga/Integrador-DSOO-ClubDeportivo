@@ -40,6 +40,8 @@
             dgvActividades = new DataGridView();
             panelActividades = new Panel();
             panelPago = new Panel();
+            label3 = new Label();
+            btnVolver = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvActividades).BeginInit();
             panelActividades.SuspendLayout();
             panelPago.SuspendLayout();
@@ -118,7 +120,7 @@
             // 
             // btnPagar
             // 
-            btnPagar.Location = new Point(273, 245);
+            btnPagar.Location = new Point(375, 247);
             btnPagar.Name = "btnPagar";
             btnPagar.Size = new Size(111, 50);
             btnPagar.TabIndex = 12;
@@ -156,6 +158,8 @@
             // 
             // panelPago
             // 
+            panelPago.Controls.Add(label3);
+            panelPago.Controls.Add(btnVolver);
             panelPago.Controls.Add(label1);
             panelPago.Controls.Add(txtMonto);
             panelPago.Controls.Add(btnPagar);
@@ -168,6 +172,25 @@
             panelPago.Name = "panelPago";
             panelPago.Size = new Size(663, 322);
             panelPago.TabIndex = 16;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(153, 35);
+            label3.Name = "label3";
+            label3.Size = new Size(13, 15);
+            label3.TabIndex = 14;
+            label3.Text = "$";
+            // 
+            // btnVolver
+            // 
+            btnVolver.Location = new Point(167, 247);
+            btnVolver.Name = "btnVolver";
+            btnVolver.Size = new Size(111, 50);
+            btnVolver.TabIndex = 13;
+            btnVolver.Text = "VOLVER";
+            btnVolver.UseVisualStyleBackColor = true;
+            btnVolver.Click += btnVolver_Click;
             // 
             // FormPago
             // 
@@ -202,5 +225,7 @@
         private DataGridView dgvActividades;
         private Panel panelActividades;
         private Panel panelPago;
+        private Button btnVolver;
+        private Label label3;
     }
 }
